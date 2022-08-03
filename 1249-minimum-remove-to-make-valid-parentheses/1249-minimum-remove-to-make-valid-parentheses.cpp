@@ -8,19 +8,17 @@ public:
            
             if(isalpha(ch))
                 continue;
-            
-            else if(ch=='(')
-                st.push(i);
-            
-            else if(ch==')') {
-                if(st.empty())
-                    s[i]='.';
-                else
-                    st.pop();
+           else if(ch=='(')
+                  st.push(i);
+           else if(ch==')'){
+               if(st.empty())
+                   s[i]='.';
+               else
+                   st.pop();
             }
         }
 
-        while(!st.empty()){
+         while(!st.empty()){
             s[st.top()]='.';
             st.pop();
         }
