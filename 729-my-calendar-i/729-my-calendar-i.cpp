@@ -1,19 +1,13 @@
 class MyCalendar {
+    set<pair<int, int>> books;
 public:
-    MyCalendar() {
-        
-    }
-    vector<pair<int, int>> books;
-    bool book(int start, int end) {
-        for (pair<int, int> p : books)
-            if (max(p.first, start) < min(end, p.second)) return false;
-        books.push_back({start, end});
+    bool book(int s, int e) {
+        auto next = books.lower_bound({s, e});
+        if (next != books.end() && next->first < e)
+            return false;
+        if (next != books.begin() && s < (--next)->second)
+            return false;
+        books.insert({ s, e });
         return true;
     }
 };
-
-/**
- * Your MyCalendar object will be instantiated and called as such:
- * MyCalendar* obj = new MyCalendar();
- * bool param_1 = obj->book(start,end);
- */
