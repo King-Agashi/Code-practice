@@ -1,6 +1,12 @@
 class Solution:
     def romanToInt(self, s: str) -> int:
-        translations = {
+        val = {
+            "IV": 4,
+            "IX": 9,
+            "XL": 40,
+            "XC": 90,
+            "CD": 400,
+            "CM": 900,
             "I": 1,
             "V": 5,
             "X": 10,
@@ -9,10 +15,12 @@ class Solution:
             "D": 500,
             "M": 1000
         }
-        number = 0
-        s = s.replace("IV", "IIII").replace("IX", "VIIII")
-        s = s.replace("XL", "XXXX").replace("XC", "LXXXX")
-        s = s.replace("CD", "CCCC").replace("CM", "DCCCC")
-        for char in s:
-            number += translations[char]
-        return number
+
+        res = 0
+
+        for k, v in val.items():
+            if k in s:
+                res += s.count(k) * v
+                s = s.replace(k, "")
+
+        return res
