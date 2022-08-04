@@ -1,14 +1,15 @@
 class Solution {
 public:
-    int pivotIndex(vector<int>& nums) 
-    {
-        for(int i=0;i<nums.size();i++)
-        {
-            int l=accumulate(nums.begin(),nums.begin()+i,0);
-            int r=accumulate(nums.begin()+i+1,nums.end(),0);
-            
-            if(l==r)
-            return i;
+    int pivotIndex(vector<int>& nums) {
+        int n= nums.size();
+        int sum=0, current=0;
+        for(int i=0; i<n; i++)
+            sum += nums[i];
+        
+        for(int i=0; i<n; i++){
+            if(current == (sum-nums[i]-current))
+                return i;
+            current += nums[i];
         }
         return -1;
     }
