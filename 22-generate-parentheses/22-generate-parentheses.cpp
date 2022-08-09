@@ -1,23 +1,24 @@
 class Solution {
 public:
-    void solve(int n,string s,vector<string>&ans,int open){
-        if(!n && !open){        ///if the len of string is 2*n and is balanced{i.e no. of  "("  = no. of ")"    }
-            ans.push_back(s);
-            return;
-            
-        }
-        if(n){                  
-            solve(n-1,s+"(",ans,open+1);
-            
-        }
-        if(open){                ////check if there is "(" in excess
-            solve(n,s+")",ans,open-1);
-        }
-    }
     vector<string> generateParenthesis(int n) {
-        vector<string>ans;
-        solve(n,"",ans,0);
+        vector<string> ans={"()"};
+        for(int i=1;i<n;i++)
+        {
+            int m = ans.size();
+            for(int j=0;j<m;j++)
+            {
+                string temp= ans[j];
+                int k=temp.length()-1;
+                while(temp[k]==')')
+                {
+                    string temp2 = temp;
+                    temp2.insert(k,"()");
+                    ans.push_back(temp2);
+                    k--;
+                }
+                ans[j]=ans[j]+"()";
+            }
+        }
         return ans;
-        
     }
 };
