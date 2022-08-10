@@ -1,41 +1,39 @@
 class Solution {
-public:    
-    bool areVectorsEqual(vector<int> a, vector<int> b){
-        for(int i=0; i<26; i++)
-            if(a[i] != b[i])
-                return false;
-        return true;
+public:
+    bool check_alphas(std::vector<int>& alpha_target, std::vector<int>& alpha_word)
+    {
+        int j = 0;
+        while (j < 26 && alpha_target[j] == alpha_word[j])
+        {
+            j++;
+        }
+        if (j == 26)
+            return true;
+        return false;
     }
-    
     bool checkInclusion(string s1, string s2) {
-        if(s2.size() < s1.size())
+        std::vector<int>alpha_target(26);
+        std::vector<int>alpha_word(26);
+        if (s1.size() > s2.size())
+        {
             return false;
-        
-        vector<int> freqS1(26, 0);
-        
-        for(char c: s1)
-            freqS1[c-'a']++;
-        
-        vector<int> freqS2(26, 0);
-        int i=0, j=0;
-        
-        while(j<s2.size()){
-            freqS2[s2[j] - 'a']++;
-            
-            if(j-i+1==s1.size())
-                if(areVectorsEqual(freqS1, freqS2))
-                    return true;
-            
-            if(j-i+1<s1.size())
-                j++;
-            
-            else {
-                freqS2[s2[i] - 'a']--;
-                i++;
-                j++;
-            }
         }
         
+        for (int i = 0; i < s1.size(); ++i)
+        {
+            alpha_target[s1[i] - 'a'] += 1;
+            alpha_word[s2[i] - 'a'] += 1;
+        }
+        if (check_alphas(alpha_target, alpha_word))
+            return true;
+        for (int i = s1.size(); i < s2.size(); ++i)
+        {
+            
+            alpha_word[s2[i - s1.size()] - 'a'] -= 1;
+            alpha_word[s2[i] - 'a'] += 1;
+            if (check_alphas(alpha_target, alpha_word))
+                return true;
+        }
         return false;
     }
 };
