@@ -11,22 +11,23 @@
  */
 class Solution {
 public:
-    TreeNode* cunstructBinaryTree(int low,int high,vector<int> nums){     
-        if(low>high)
-            return NULL;
-        
-        int mid         = low + (high-low)/2;
-        TreeNode* root  = new TreeNode(nums[mid]);
-        root -> left    = cunstructBinaryTree(low,mid-1,nums);
-        root -> right   = cunstructBinaryTree(mid+1,high,nums);
-        
-        return root;   
-        }
-    
     TreeNode* sortedArrayToBST(vector<int>& nums) {
-        int low     = 0,
-            high    = nums.size() - 1;
+        return makeBST(nums, 0, nums.size() - 1);
+    }
+    
+    TreeNode* makeBST(vector<int>& nums, int start, int end) { // end is inclusive
+        if (start > end) { return nullptr; }
+        if (start == end) {
+            TreeNode* newNode = new TreeNode(nums[start]);
+            return newNode;
+        }
         
-        return cunstructBinaryTree(low,high,nums);
+        int mid = (start + end) / 2;
+        int val = nums[mid];
+        TreeNode* left = makeBST(nums, start, mid - 1);
+        TreeNode* right = makeBST(nums, mid + 1, end);
+        TreeNode* newNode = new TreeNode(val, left, right);
+        
+        return newNode;
     }
 };
