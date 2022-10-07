@@ -1,51 +1,30 @@
 class Solution {
 public:
-    int solveRes(vector<int> &vertex, int i, int j)
-    {
-        // if triangle can't be formed
-        if (j - i < 2)
-        {
-            return 0;
-        }
-
-        // initialize result as infinite
-        int res = INT_MAX;
-
-        // loop over all vertices between i and j
-        for (int k = i + 1; k < j; k++)
-        {
-            res = min(res, solveRes(vertex, i, k) +
-                              solveRes(vertex, k, j) +
-                              vertex[i] * vertex[k] * vertex[j]);
-        }
-        return res;
+    int dp[50][50];
+    int minScoreTriangulation(vector<int>& A) {
+        int n=A.size();
+        for(int i=0;i<n;i++)
+            for(int j=0;j<n;j++)
+                dp[i][j]=INT_MAX;
+        return solve(A,n);
     }
-    
-    int solveMem(vector<vector<int>> &dp, vector<int> &vertex, int i, int j)
-    {
-        if (dp[i][j] == 0)
-        {
-            /* iterate over all the vertices between i and j */
-            for (int k = i + 1; k < j; k++)
-            {
-                int curr_score = vertex[i] * vertex[k] * vertex[j];
-
-                // Left sub polygon
-                int left_polygon = solveMem(dp, vertex, i, k);
-
-                // Right subpolygon
-                int right_polygon = solveMem(dp, vertex, k, j);
-
-                dp[i][j] = min(dp[i][j] == 0 ? INT_MAX : dp[i][j], left_polygon + curr_score + right_polygon);
+private:
+    int solve(vector<int>& A, int n){
+        for(int k=0;k<n;k++){
+            int j=k;
+            for(int i=0;i<n-k;i++){
+                if(i==j || i+1==j)
+                    dp[i][j]=0;
+                else{
+                    for(int p=i+1;p<j;p++){
+                        int r1=dp[i][p];
+                        int r2=dp[p][j];
+                        dp[i][j]=min(dp[i][j],r1+r2+A[i]*A[j]*A[p]);
+                    }
+                }
+                j++;
             }
         }
-        return dp[i][j];
-    }
-    
-    int minScoreTriangulation(vector<int>& values) {
-        int n = values.size();
-        vector<vector<int>> dp(n, vector<int>(n, 0));
-        int ans = solveMem(dp, values, 0, n - 1);
-        return ans;
+        return dp[0][n-1];
     }
 };
